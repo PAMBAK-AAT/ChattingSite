@@ -17,7 +17,7 @@ import { GoArrowUpLeft } from "react-icons/go";
 import SearchUser from './SearchUser.jsx';
 import { FaImage } from "react-icons/fa6";
 import { FaVideo } from "react-icons/fa";
-import { logout } from '../redux/userSlice.jsx';
+import { logout , setSocketConnection } from '../redux/userSlice.jsx';
 
 export const Sidebar = () => {
     const user = useSelector(state => state?.user);
@@ -29,6 +29,11 @@ export const Sidebar = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
+
+        const storedUser = JSON.parse(localStorage.getItem('user'));
+        if (storedUser) {
+            dispatch(setSocketConnection(storedUser.socketConnection));
+        }
         
         if (socketConnection) {
             console.log('Connected to socket server');
@@ -60,6 +65,7 @@ export const Sidebar = () => {
     const handleLogOut = () => {
         dispatch(logout())
         navigate("/email");
+        localStorage.removeItem('user'); // Clear user data from localStorage
         localStorage.clear();
     }
 

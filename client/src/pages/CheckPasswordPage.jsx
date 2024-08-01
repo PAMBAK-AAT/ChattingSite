@@ -94,7 +94,15 @@ const CheckPasswordPage = () => {
             }));
             
             dispatch(setToken(response?.data?.token))
-            localStorage.setItem('token',response?.data?.token)
+            
+            // Store the token and user data in localStorage
+            localStorage.setItem('token', response?.data?.token);
+            localStorage.setItem('user', JSON.stringify({
+                _id: location.state._id,
+                name: location.state.name,
+                email: location.state.email,
+                profile_pic: location.state.profile_pic
+            }));
 
             setData({
               password: "", 

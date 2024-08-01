@@ -38,6 +38,7 @@ export const userSlice = createSlice({
             state.name =  action.payload.name
             state.email =  action.payload.email
             state.profile_pic=  action.payload.profile_pic
+            localStorage.setItem('user', JSON.stringify(action.payload));
         },
         // This reducer updates the token property with the value provided in the action's payload.
         setToken: (state,action) => {
@@ -51,6 +52,8 @@ export const userSlice = createSlice({
             state.profile_pic= ""
             state.token = ""
             state.socketConnection = null
+            localStorage.removeItem('user')
+            localStorage.removeItem('token')
         },
         setOnlineUser : (state,action) => {
             state.onlineUser = action.payload;

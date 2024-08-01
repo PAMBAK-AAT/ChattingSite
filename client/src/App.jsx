@@ -6,7 +6,7 @@ import { Outlet } from 'react-router-dom'
 import toast, { Toaster } from 'react-hot-toast'
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { setUser } from './redux/userSlice';
+import { setUser , setToken } from './redux/userSlice';
 
 function App() {
 

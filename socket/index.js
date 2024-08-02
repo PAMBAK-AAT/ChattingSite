@@ -10,7 +10,7 @@ const app = express();
 const getConversation = require('../helper/getConversation');
 const { ConversationModel, MessageModel } = require('../models/conversationModel');
 
-const server = https.createServer(app);
+const server = http.createServer(app);
 
 const io = new Server(server, {
     cors: {

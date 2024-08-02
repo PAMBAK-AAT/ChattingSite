@@ -2,6 +2,7 @@ const express = require("express");
 const { Server } = require('socket.io');
 const getUserdetail = require("../helper/getUserDetailfromToken");
 const http = require('http');
+const https = require('https')
 const UserModel = require("../models/userModel");
 const mongoose = require("mongoose");
 
@@ -9,7 +10,7 @@ const app = express();
 const getConversation = require('../helper/getConversation');
 const { ConversationModel, MessageModel } = require('../models/conversationModel');
 
-const server = http.createServer(app);
+const server = https.createServer(app);
 
 const io = new Server(server, {
     cors: {

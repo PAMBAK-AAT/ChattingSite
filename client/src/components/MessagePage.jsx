@@ -32,6 +32,7 @@ import backImage from '../assets/wallapaper.jpeg';
 import { IoSend } from "react-icons/io5";
 import moment from 'moment'
 import { useRef } from 'react';
+import axios from 'axios' // import axios
 
 const MessagePage = () => {
   const params = useParams();
@@ -120,6 +121,22 @@ const MessagePage = () => {
     })
   }
 
+  /// Added part 
+   // Fetch messages from server
+   useEffect(() => {
+    const fetchMessages = async () => {
+      try {
+        const response = await axios.get(`/api/messages/${params.userId}`);
+        setAllMessage(response.data);
+      } catch (error) {
+        console.error('Error fetching messages', error);
+      }
+    };
+
+    fetchMessages();
+  }, [params.userId]); // Added this useEffect to fetch 
+
+  
   useEffect(() => {
     if (socketConnection) {
       socketConnection.emit('message-page', params.userId);

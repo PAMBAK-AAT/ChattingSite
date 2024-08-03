@@ -186,6 +186,33 @@ io.on('connection', async (socket) => {
     });
 });
 
+// Add POST route to save messages
+app.post('/api/messages', async (req, res) => {
+    try {
+        const { text, imageUrl, videoUrl, msgByUserId } = req.body;
+        const message = new MessageModel({
+            text,
+            imageUrl,
+            videoUrl,
+            msgByUserId
+        });
+        const savedMessage = await message.save();
+        res.status(201).json(savedMessage);
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to save message' });
+    }
+});
+
+// Add GET route to fetch messages
+app.get('/api/messages', async (req, res) => {
+    try {
+        const messages = await MessageModel.find().sort({ createdAt: -1 });
+        res.status(200).json(messages);
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to fetch messages' });
+    }
+});
+
 module.exports = {
     app,
     server

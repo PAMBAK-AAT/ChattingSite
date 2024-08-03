@@ -127,32 +127,61 @@ const MessagePage = () => {
     const fetchMessages = async () => {
       try {
         const response = await axios.get(`/api/messages/${params.userId}`);
-        setAllMessage(response.data);
+        if (Array.isArray(response.data)) {
+          setAllMessage(response.data);
+        } else {
+          console.error('Expected an array but got', response.data);
+          setAllMessage([]);
+        }
       } catch (error) {
         console.error('Error fetching messages', error);
+        setAllMessage([]);
       }
     };
-
-    fetchMessages();
-  }, [params.userId]); // Added this useEffect to fetch 
-
   
+    fetchMessages();
+  }, [params.userId]);
+  
+
+
+  // useEffect(() => {
+  //   if (socketConnection) {
+  //     socketConnection.emit('message-page', params.userId);
+
+  //     socketConnection.emit('seen',params.userId);
+
+  //     socketConnection.on('message-user', (data) => {
+  //       setDataUser(data);
+  //     });
+
+  //     socketConnection.on('message' , (data) => {
+  //       console.log('message data' , data);
+  //       setAllMessage(data);
+  //     })
+  //   }
+  // }, [socketConnection, params?.userId,user]);
+
   useEffect(() => {
     if (socketConnection) {
       socketConnection.emit('message-page', params.userId);
-
-      socketConnection.emit('seen',params.userId);
-
+      socketConnection.emit('seen', params.userId);
+  
       socketConnection.on('message-user', (data) => {
         setDataUser(data);
       });
-
-      socketConnection.on('message' , (data) => {
-        console.log('message data' , data);
-        setAllMessage(data);
-      })
+  
+      socketConnection.on('message', (data) => {
+        console.log('message data', data);
+        if (Array.isArray(data)) {
+          setAllMessage(data);
+        } else {
+          console.error('Expected an array but got', data);
+          setAllMessage([]);
+        }
+      });
     }
-  }, [socketConnection, params?.userId,user]);
+  }, [socketConnection, params?.userId, user]);
+  
 
   const handleOnChange = (ele) => {
     const { name , value } = ele.target;
